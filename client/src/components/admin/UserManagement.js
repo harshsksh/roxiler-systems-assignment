@@ -167,11 +167,6 @@ const UserManagement = () => {
     setPagination(prev => ({ ...prev, page: 1 }));
   };
 
-  const handleFilterTypeChange = (e) => {
-    setFilterType(e.target.value);
-    setPagination(prev => ({ ...prev, page: 1 }));
-  };
-
   const handleRoleFilter = (e) => {
     setRoleFilter(e.target.value);
     setPagination(prev => ({ ...prev, page: 1 }));
@@ -184,6 +179,7 @@ const UserManagement = () => {
       setSortBy(field);
       setSortOrder('ASC');
     }
+    setFilterType(field);
     setPagination(prev => ({ ...prev, page: 1 }));
   };
 
@@ -216,7 +212,7 @@ const UserManagement = () => {
 
       {/* Filters */}
       <div className="bg-white p-4 rounded-lg shadow">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
@@ -227,17 +223,6 @@ const UserManagement = () => {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-          
-          <select
-            value={filterType}
-            onChange={handleFilterTypeChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="name">Filter by Name</option>
-            <option value="email">Filter by Email</option>
-            <option value="address">Filter by Address</option>
-            <option value="role">Filter by Role</option>
-          </select>
           
           <select
             value={roleFilter}
@@ -258,6 +243,22 @@ const UserManagement = () => {
             >
               <Filter className="h-4 w-4 mr-2" />
               Sort by Name {sortBy === 'name' && (sortOrder === 'ASC' ? '↑' : '↓')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => handleSort('email')}
+              className="flex items-center"
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              Sort by Email {sortBy === 'email' && (sortOrder === 'ASC' ? '↑' : '↓')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => handleSort('role')}
+              className="flex items-center"
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              Sort by Role {sortBy === 'role' && (sortOrder === 'ASC' ? '↑' : '↓')}
             </Button>
           </div>
         </div>
