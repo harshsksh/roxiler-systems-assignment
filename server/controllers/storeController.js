@@ -125,11 +125,18 @@ const createStore = async (req, res) => {
       ownerId
     });
 
-    // Update owner's role to store_owner
-    await owner.update({ 
-      role: 'store_owner',
-      isStoreOwner: true 
-    });
+    // Update owner's role to store_owner (unless they're already a system admin)
+    if (owner.role !== 'system_admin') {
+      await owner.update({ 
+        role: 'store_owner',
+        isStoreOwner: true 
+      });
+    } else {
+      // System admins can own stores without losing their admin role
+      await owner.update({ 
+        isStoreOwner: true 
+      });
+    }
 
     const createdStore = await Store.findByPk(store.id, {
       include: [
