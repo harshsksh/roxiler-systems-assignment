@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { storeService } from '../../services/storeService';
 import { ratingService } from '../../services/ratingService';
 import { useAuth } from '../../context/AuthContext';
-import { Search, Star, MapPin } from 'lucide-react';
+import { Search, Star, MapPin, Store } from 'lucide-react';
 import LoadingSpinner from '../LoadingSpinner';
 import Button from '../Button';
 import toast from 'react-hot-toast';
@@ -24,7 +24,11 @@ const StoreList = () => {
   });
 
   useEffect(() => {
-    fetchStores();
+    const timeoutId = setTimeout(() => {
+      fetchStores();
+    }, searchTerm ? 500 : 0); // Debounce search, but not initial load
+
+    return () => clearTimeout(timeoutId);
   }, [pagination.page, searchTerm]);
 
   const fetchStores = async () => {
@@ -41,8 +45,18 @@ const StoreList = () => {
       setStores(response.data.stores);
       setPagination(response.data.pagination);
     } catch (error) {
-      toast.error('Failed to fetch stores');
       console.error('Error fetching stores:', error);
+      
+      // Provide more specific error messages
+      if (error.response?.status === 404) {
+        toast.error('Stores endpoint not found');
+      } else if (error.response?.status === 500) {
+        toast.error('Server error occurred while fetching stores');
+      } else if (error.code === 'NETWORK_ERROR' || !error.response) {
+        toast.error('Network error: Unable to connect to server');
+      } else {
+        toast.error('Failed to fetch stores. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -131,6 +145,21 @@ const StoreList = () => {
       {/* Stores Grid */}
       {loading ? (
         <LoadingSpinner size="lg" className="py-8" />
+      ) : stores.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-gray-500">
+            <Store className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              {searchTerm ? 'No stores found' : 'No stores available'}
+            </h3>
+            <p className="text-gray-500">
+              {searchTerm 
+                ? `No stores match your search for "${searchTerm}". Try a different search term.`
+                : 'There are no stores registered in the system yet.'
+              }
+            </p>
+          </div>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {stores.map((store) => (

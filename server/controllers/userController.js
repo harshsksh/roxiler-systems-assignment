@@ -10,10 +10,11 @@ const getAllUsers = async (req, res) => {
 
     // Apply filters
     if (search) {
+      // Use LIKE for SQLite compatibility (case-insensitive search)
       whereClause[Op.or] = [
-        { name: { [Op.iLike]: `%${search}%` } },
-        { email: { [Op.iLike]: `%${search}%` } },
-        { address: { [Op.iLike]: `%${search}%` } }
+        { name: { [Op.like]: `%${search}%` } },
+        { email: { [Op.like]: `%${search}%` } },
+        { address: { [Op.like]: `%${search}%` } }
       ];
     }
 

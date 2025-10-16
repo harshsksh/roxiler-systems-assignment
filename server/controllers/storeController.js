@@ -10,9 +10,10 @@ const getAllStores = async (req, res) => {
 
     // Apply search filters
     if (search) {
+      // Use LIKE for SQLite compatibility (case-insensitive search)
       whereClause[Op.or] = [
-        { name: { [Op.iLike]: `%${search}%` } },
-        { address: { [Op.iLike]: `%${search}%` } }
+        { name: { [Op.like]: `%${search}%` } },
+        { address: { [Op.like]: `%${search}%` } }
       ];
     }
 
@@ -41,7 +42,10 @@ const getAllStores = async (req, res) => {
     });
   } catch (error) {
     console.error('Get all stores error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Failed to fetch stores',
+      message: error.message || 'Internal server error'
+    });
   }
 };
 
