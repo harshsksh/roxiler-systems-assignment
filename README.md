@@ -159,7 +159,7 @@ After starting the application, you can log in with the default admin account:
 ## Form Validations
 
 ### Name
-- Minimum 20 characters, maximum 60 characters
+- Minimum 5 characters, maximum 60 characters
 
 ### Address
 - Maximum 400 characters
@@ -179,7 +179,7 @@ After starting the application, you can log in with the default admin account:
 
 ### Users Table
 - `id` (Primary Key)
-- `name` (String, 20-60 chars)
+- `name` (String, 5-60 chars)
 - `email` (String, unique)
 - `password` (String, hashed)
 - `address` (Text, max 400 chars)

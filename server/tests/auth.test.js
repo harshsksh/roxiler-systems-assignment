@@ -46,7 +46,7 @@ describe('Authentication API', () => {
 
     it('should fail with short name', async () => {
       const userData = {
-        name: 'Short',
+        name: 'Ab',
         email: 'test2@example.com',
         password: 'TestPass123!',
         address: '123 Test Street, Test City, Test State 12345'
@@ -58,6 +58,23 @@ describe('Authentication API', () => {
         .expect(400);
 
       expect(response.body).toHaveProperty('error');
+    });
+
+    it('should register with valid short name (5 characters)', async () => {
+      const userData = {
+        name: 'Alice',
+        email: 'alice@example.com',
+        password: 'TestPass123!',
+        address: '123 Test Street, Test City, Test State 12345'
+      };
+
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send(userData)
+        .expect(201);
+
+      expect(response.body).toHaveProperty('message', 'User registered successfully');
+      expect(response.body.user.name).toBe('Alice');
     });
   });
 

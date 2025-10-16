@@ -398,7 +398,7 @@ const StoreManagement = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   error={errors.name}
-                  placeholder="Enter store name (20-60 characters)"
+                  placeholder="Enter store name (5-60 characters)"
                   required
                 />
                 

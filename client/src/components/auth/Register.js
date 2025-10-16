@@ -95,7 +95,7 @@ const Register = () => {
               value={formData.name}
               onChange={handleChange}
               error={errors.name}
-              placeholder="Enter your full name (20-60 characters)"
+              placeholder="Enter your full name (5-60 characters)"
               required
               autoComplete="name"
             />

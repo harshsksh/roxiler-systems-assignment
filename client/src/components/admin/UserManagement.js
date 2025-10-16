@@ -383,7 +383,7 @@ const UserManagement = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   error={errors.name}
-                  placeholder="Enter full name (20-60 characters)"
+                  placeholder="Enter full name (5-60 characters)"
                   required={!editingUser}
                 />
                 
