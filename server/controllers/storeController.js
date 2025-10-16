@@ -9,14 +9,15 @@ const getAllStores = async (req, res) => {
     const whereClause = {};
 
     // Apply search filters
-    if (search) {
-      // Use LIKE for SQLite compatibility (case-insensitive search)
+    if (search && search.trim()) {
+      const searchTerm = search.trim().toLowerCase();
+      // Use LIKE for SQLite compatibility with case-insensitive search
       whereClause[Op.or] = [
-        { name: { [Op.like]: `%${search}%` } },
-        { address: { [Op.like]: `%${search}%` } }
+        sequelize.where(sequelize.fn('LOWER', sequelize.col('Store.name')), { [Op.like]: `%${searchTerm}%` }),
+        sequelize.where(sequelize.fn('LOWER', sequelize.col('Store.address')), { [Op.like]: `%${searchTerm}%` })
       ];
     }
-
+    
     const { count, rows: stores } = await Store.findAndCountAll({
       where: whereClause,
       include: [
@@ -30,6 +31,7 @@ const getAllStores = async (req, res) => {
       limit: parseInt(limit),
       offset: parseInt(offset)
     });
+
 
     res.json({
       stores,

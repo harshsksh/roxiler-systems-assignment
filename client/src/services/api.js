@@ -26,8 +26,8 @@ api.interceptors.request.use(
       config.url.startsWith(endpoint)
     );
     
-    // Only add Authorization header if we have a token and it's not a public endpoint
-    if (token && !isPublicEndpoint) {
+    // Add Authorization header for all requests except public endpoints
+    if (!isPublicEndpoint && token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     

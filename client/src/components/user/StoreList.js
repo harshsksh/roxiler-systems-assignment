@@ -26,7 +26,7 @@ const StoreList = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchStores();
-    }, searchTerm ? 500 : 0); // Debounce search, but not initial load
+    }, 300); // Debounce all requests
 
     return () => clearTimeout(timeoutId);
   }, [pagination.page, searchTerm]);
@@ -39,9 +39,12 @@ const StoreList = () => {
         limit: pagination.limit
       };
       
-      if (searchTerm) params.search = searchTerm;
+      if (searchTerm && searchTerm.trim()) {
+        params.search = searchTerm.trim();
+      }
 
       const response = await storeService.getAllStores(params);
+      
       setStores(response.data.stores);
       setPagination(response.data.pagination);
     } catch (error) {
@@ -140,6 +143,11 @@ const StoreList = () => {
             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+        {searchTerm && (
+          <div className="mt-2 text-sm text-gray-600">
+            Searching for: "{searchTerm}"
+          </div>
+        )}
       </div>
 
       {/* Stores Grid */}

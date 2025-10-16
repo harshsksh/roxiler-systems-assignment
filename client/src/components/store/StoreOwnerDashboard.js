@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { storeService } from '../../services/storeService';
-import { Star, Users, TrendingUp, MessageSquare } from 'lucide-react';
+import { Star, Users, TrendingUp, MessageSquare, Store } from 'lucide-react';
 import LoadingSpinner from '../LoadingSpinner';
 import toast from 'react-hot-toast';
 
