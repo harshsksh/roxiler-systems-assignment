@@ -39,6 +39,13 @@ const getAllUsers = async (req, res) => {
     const { count, rows: users } = await User.findAndCountAll({
       where: whereClause,
       attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: Store,
+          as: 'ownedStores',
+          attributes: ['id', 'name', 'averageRating', 'totalRatings']
+        }
+      ],
       order: [[sortBy, sortOrder.toUpperCase()]],
       limit: parseInt(limit),
       offset: parseInt(offset)

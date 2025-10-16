@@ -4,7 +4,7 @@ import { validateName, validateEmail, validatePassword, validateAddress } from '
 import FormInput from '../FormInput';
 import Button from '../Button';
 import LoadingSpinner from '../LoadingSpinner';
-import { Plus, Edit, Trash2, Search, Filter } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, Filter, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const UserManagement = () => {
@@ -191,6 +191,27 @@ const UserManagement = () => {
     setErrors({});
   };
 
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />);
+    }
+
+    if (hasHalfStar) {
+      stars.push(<Star key="half" className="h-4 w-4 text-yellow-400 fill-current opacity-50" />);
+    }
+
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<Star key={`empty-${i}`} className="h-4 w-4 text-gray-300" />);
+    }
+
+    return stars;
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -276,6 +297,9 @@ const UserManagement = () => {
                       Role
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Rating
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -300,6 +324,25 @@ const UserManagement = () => {
                         }`}>
                           {user.role.replace('_', ' ').toUpperCase()}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {user.role === 'store_owner' && user.ownedStores && user.ownedStores.length > 0 ? (
+                          <div className="flex flex-col">
+                            <div className="flex items-center mb-1">
+                              <div className="flex items-center mr-2">
+                                {renderStars(user.ownedStores[0].averageRating || 0)}
+                              </div>
+                              <span className="text-sm text-gray-500">
+                                ({user.ownedStores[0].averageRating ? user.ownedStores[0].averageRating.toFixed(1) : '0.0'})
+                              </span>
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {user.ownedStores[0].name}
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-sm text-gray-400">-</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
