@@ -17,8 +17,7 @@ api.interceptors.request.use(
     // List of public endpoints that don't require authentication
     const publicEndpoints = [
       '/auth/login',
-      '/auth/register',
-      '/stores'
+      '/auth/register'
     ];
     
     // Check if the current request is to a public endpoint
@@ -26,8 +25,11 @@ api.interceptors.request.use(
       config.url.startsWith(endpoint)
     );
     
+    // Special case: GET /stores is public, but POST/PUT/DELETE /stores requires auth
+    const isPublicStoreGet = config.url.startsWith('/stores') && config.method.toLowerCase() === 'get';
+    
     // Add Authorization header for all requests except public endpoints
-    if (!isPublicEndpoint && token) {
+    if (!isPublicEndpoint && !isPublicStoreGet && token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     
