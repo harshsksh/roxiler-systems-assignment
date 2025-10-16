@@ -8,7 +8,6 @@ const quickStart = async () => {
   console.log('Quick Start - Store Rating System\n');
   
   try {
-    // Kill existing Node.js processes
     console.log('Cleaning up existing processes...');
     try {
       await execAsync('taskkill /IM node.exe /F');
@@ -17,7 +16,6 @@ const quickStart = async () => {
       console.log('No existing Node.js processes to kill');
     }
     
-    // Wait a moment
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     console.log('\nStarting application...');
@@ -28,14 +26,12 @@ const quickStart = async () => {
     console.log('Application starting...');
     console.log('='.repeat(50) + '\n');
     
-    // Start the application
     const child = spawn('npm', ['run', 'dev'], {
       stdio: 'inherit',
       shell: true,
       cwd: process.cwd()
     });
     
-    // Handle termination
     process.on('SIGINT', () => {
       console.log('\nShutting down...');
       child.kill('SIGINT');

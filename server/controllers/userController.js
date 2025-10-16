@@ -8,9 +8,7 @@ const getAllUsers = async (req, res) => {
     const offset = (page - 1) * limit;
     const whereClause = {};
 
-    // Apply filters
     if (search) {
-      // Use LIKE for SQLite compatibility (case-insensitive search)
       whereClause[Op.or] = [
         { name: { [Op.like]: `%${search}%` } },
         { email: { [Op.like]: `%${search}%` } },
@@ -75,7 +73,6 @@ const createUser = async (req, res) => {
   try {
     const { name, email, password, address, role = 'normal_user' } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
@@ -115,7 +112,6 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Check if email is being changed and if it already exists
     if (email && email !== user.email) {
       const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {

@@ -12,13 +12,11 @@ const register = async (req, res) => {
   try {
     const { name, email, password, address } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
-
-    // Create new user
+    
     const user = await User.create({
       name,
       email,
@@ -50,13 +48,11 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user by email
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
-
-    // Check password
+    
     const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid email or password' });
@@ -100,13 +96,11 @@ const updatePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
     const user = await User.findByPk(req.user.id);
 
-    // Verify current password
     const isCurrentPasswordValid = await user.comparePassword(currentPassword);
     if (!isCurrentPasswordValid) {
       return res.status(400).json({ error: 'Current password is incorrect' });
     }
-
-    // Update password
+    
     await user.update({ password: newPassword });
 
     res.json({ message: 'Password updated successfully' });

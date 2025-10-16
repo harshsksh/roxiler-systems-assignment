@@ -25,14 +25,12 @@ const StoreOwnerDashboard = () => {
     try {
       setLoading(true);
       
-      // Find user's store
       const storesResponse = await storeService.getAllStores({ limit: 1000 });
       const userStore = storesResponse.data.stores.find(s => s.ownerId === user.id);
       
       if (userStore) {
         setStore(userStore);
         
-        // Fetch store ratings
         const ratingsResponse = await storeService.getStoreRatings(userStore.id, {
           page: pagination.page,
           limit: pagination.limit
@@ -87,13 +85,11 @@ const StoreOwnerDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Store Dashboard</h1>
         <p className="text-gray-600 mt-2">Monitor your store's performance and customer feedback</p>
       </div>
 
-      {/* Store Overview */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -114,7 +110,6 @@ const StoreOwnerDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center">
@@ -159,7 +154,6 @@ const StoreOwnerDashboard = () => {
         </div>
       </div>
 
-      {/* Recent Ratings */}
       <div className="bg-white rounded-lg shadow">
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">Recent Customer Ratings</h2>
@@ -208,7 +202,6 @@ const StoreOwnerDashboard = () => {
           )}
         </div>
 
-        {/* Pagination */}
         {pagination.totalPages > 1 && (
           <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
             <div className="flex-1 flex justify-between sm:hidden">

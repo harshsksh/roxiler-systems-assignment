@@ -46,7 +46,6 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -81,7 +80,6 @@ const Layout = ({ children }) => {
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
         {user && (
           <nav className="w-64 bg-white shadow-sm min-h-screen">
             <div className="p-4">
@@ -111,7 +109,6 @@ const Layout = ({ children }) => {
           </nav>
         )}
 
-        {/* Main Content */}
         <main className={`flex-1 ${user ? 'p-6' : ''}`}>
           {children}
         </main>

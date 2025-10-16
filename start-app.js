@@ -9,7 +9,6 @@ const startApplication = async () => {
   console.log('Starting Store Rating System...\n');
   
   try {
-    // Step 1: Kill existing Node.js processes
     console.log('Step 1: Cleaning up existing processes...');
     try {
       await killNodeProcesses();
@@ -18,7 +17,6 @@ const startApplication = async () => {
     }
     console.log('');
     
-    // Step 2: Ensure ports are available
     console.log('Step 2: Checking and freeing up ports...');
     try {
       const portsAvailable = await ensurePortsAvailable([3000, 5000]);
@@ -31,7 +29,6 @@ const startApplication = async () => {
     
     console.log('');
     
-    // Step 3: Start the application
     console.log('Step 3: Starting the application...');
     console.log('Frontend will be available at: http://localhost:3000');
     console.log('Backend API will be available at: http://localhost:5000');
@@ -40,13 +37,11 @@ const startApplication = async () => {
     console.log('Application is starting...');
     console.log('='.repeat(60) + '\n');
     
-    // Start the application using concurrently
     const child = exec('npm run dev', {
       cwd: process.cwd(),
       stdio: 'inherit'
     });
     
-    // Handle process termination
     process.on('SIGINT', () => {
       console.log('\nShutting down application...');
       if (child) {
@@ -81,7 +76,6 @@ const startApplication = async () => {
   }
 };
 
-// Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
   process.exit(1);

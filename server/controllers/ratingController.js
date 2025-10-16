@@ -5,24 +5,20 @@ const submitRating = async (req, res) => {
     const { storeId, rating, comment } = req.body;
     const userId = req.user.id;
 
-    // Check if store exists
     const store = await Store.findByPk(storeId);
     if (!store) {
       return res.status(404).json({ error: 'Store not found' });
     }
 
-    // Check if user already rated this store
     const existingRating = await Rating.findOne({
       where: { userId, storeId }
     });
 
     let ratingRecord;
     if (existingRating) {
-      // Update existing rating
       await existingRating.update({ rating, comment });
       ratingRecord = existingRating;
     } else {
-      // Create new rating
       ratingRecord = await Rating.create({
         userId,
         storeId,
@@ -30,8 +26,6 @@ const submitRating = async (req, res) => {
         comment
       });
     }
-
-    // Update store's average rating
     await updateStoreAverageRating(storeId);
 
     const createdRating = await Rating.findByPk(ratingRecord.id, {
@@ -110,8 +104,6 @@ const deleteRating = async (req, res) => {
 
     const storeId = rating.storeId;
     await rating.destroy();
-
-    // Update store's average rating
     await updateStoreAverageRating(storeId);
 
     res.json({ message: 'Rating deleted successfully' });

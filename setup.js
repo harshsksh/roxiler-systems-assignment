@@ -6,7 +6,6 @@ const path = require('path');
 
 console.log('Setting up Store Rating System...\n');
 
-// Check if Node.js version is compatible
 const nodeVersion = process.version;
 const majorVersion = parseInt(nodeVersion.slice(1).split('.')[0]);
 
@@ -18,7 +17,6 @@ if (majorVersion < 14) {
 
 console.log(`Node.js version: ${nodeVersion}`);
 
-// Install root dependencies
 console.log('\nInstalling root dependencies...');
 try {
   execSync('npm install', { stdio: 'inherit' });
@@ -28,7 +26,6 @@ try {
   process.exit(1);
 }
 
-// Install server dependencies
 console.log('\nInstalling server dependencies...');
 try {
   execSync('cd server && npm install', { stdio: 'inherit' });
@@ -38,7 +35,6 @@ try {
   process.exit(1);
 }
 
-// Install client dependencies
 console.log('\nInstalling client dependencies...');
 try {
   execSync('cd client && npm install', { stdio: 'inherit' });
@@ -48,7 +44,6 @@ try {
   process.exit(1);
 }
 
-// Create .env file if it doesn't exist
 const envPath = path.join(__dirname, 'server', '.env');
 const envExamplePath = path.join(__dirname, 'server', 'env.example');
 

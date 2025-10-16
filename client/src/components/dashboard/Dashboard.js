@@ -59,13 +59,11 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="bg-white rounded-lg shadow p-6">
         <h1 className="text-2xl font-bold text-gray-900">{getWelcomeMessage()}</h1>
         <p className="text-gray-600 mt-2">{getRoleDescription()}</p>
       </div>
 
-      {/* Stats Cards - Only for System Admin */}
       {user?.role === 'system_admin' && stats && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-lg shadow p-6">
@@ -106,7 +104,6 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Quick Actions */}
       <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

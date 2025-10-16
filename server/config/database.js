@@ -1,7 +1,6 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// Check if we should use SQLite (for development when PostgreSQL is not available)
 const useSQLite = process.env.USE_SQLITE === 'true' || !process.env.DB_PASSWORD;
 
 let sequelize;

@@ -9,26 +9,21 @@ const api = axios.create({
   },
 });
 
-// Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     
-    // List of public endpoints that don't require authentication
     const publicEndpoints = [
       '/auth/login',
       '/auth/register'
     ];
     
-    // Check if the current request is to a public endpoint
     const isPublicEndpoint = publicEndpoints.some(endpoint => 
       config.url.startsWith(endpoint)
     );
     
-    // Special case: Only GET /stores (list all stores) is public, other GET requests require auth
     const isPublicStoreList = config.url === '/stores' && config.method.toLowerCase() === 'get';
     
-    // Add Authorization header for all requests except public endpoints
     if (!isPublicEndpoint && !isPublicStoreList && token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -39,8 +34,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-// Response interceptor to handle errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -26,7 +26,7 @@ const StoreList = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchStores();
-    }, 300); // Debounce all requests
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [pagination.page, searchTerm]);
@@ -50,7 +50,6 @@ const StoreList = () => {
     } catch (error) {
       console.error('Error fetching stores:', error);
       
-      // Provide more specific error messages
       if (error.response?.status === 404) {
         toast.error('Stores endpoint not found');
       } else if (error.response?.status === 500) {
@@ -92,7 +91,7 @@ const StoreList = () => {
       
       toast.success('Rating submitted successfully');
       setShowRatingModal(false);
-      fetchStores(); // Refresh the list to show updated ratings
+      fetchStores();
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to submit rating');
     }
@@ -125,13 +124,11 @@ const StoreList = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Browse Stores</h1>
         <p className="text-gray-600 mt-2">Find and rate stores in your area</p>
       </div>
 
-      {/* Search */}
       <div className="bg-white p-4 rounded-lg shadow">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -150,7 +147,6 @@ const StoreList = () => {
         )}
       </div>
 
-      {/* Stores Grid */}
       {loading ? (
         <LoadingSpinner size="lg" className="py-8" />
       ) : stores.length === 0 ? (
@@ -220,7 +216,6 @@ const StoreList = () => {
         </div>
       )}
 
-      {/* Pagination */}
       {pagination.totalPages > 1 && (
         <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-lg shadow">
           <div className="flex-1 flex justify-between sm:hidden">
@@ -271,7 +266,6 @@ const StoreList = () => {
         </div>
       )}
 
-      {/* Rating Modal */}
       {showRatingModal && selectedStore && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">

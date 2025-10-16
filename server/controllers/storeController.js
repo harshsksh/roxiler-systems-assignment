@@ -8,10 +8,8 @@ const getAllStores = async (req, res) => {
     const offset = (page - 1) * limit;
     const whereClause = {};
 
-    // Apply search filters
     if (search && search.trim()) {
       const searchTerm = search.trim().toLowerCase();
-      // Use LIKE for SQLite compatibility with case-insensitive search
       whereClause[Op.or] = [
         sequelize.where(sequelize.fn('LOWER', sequelize.col('Store.name')), { [Op.like]: `%${searchTerm}%` }),
         sequelize.where(sequelize.fn('LOWER', sequelize.col('Store.address')), { [Op.like]: `%${searchTerm}%` })
@@ -31,7 +29,6 @@ const getAllStores = async (req, res) => {
       limit: parseInt(limit),
       offset: parseInt(offset)
     });
-
 
     res.json({
       stores,
@@ -81,7 +78,6 @@ const getStoreById = async (req, res) => {
       return res.status(404).json({ error: 'Store not found' });
     }
 
-    // Get user's rating for this store if logged in
     let userRating = null;
     if (userId) {
       const rating = await Rating.findOne({
@@ -106,13 +102,11 @@ const createStore = async (req, res) => {
   try {
     const { name, email, address, ownerId } = req.body;
 
-    // Check if store with same email already exists
     const existingStore = await Store.findOne({ where: { email } });
     if (existingStore) {
       return res.status(400).json({ error: 'Store with this email already exists' });
     }
 
-    // Verify owner exists
     const owner = await User.findByPk(ownerId);
     if (!owner) {
       return res.status(404).json({ error: 'Owner not found' });
@@ -125,14 +119,12 @@ const createStore = async (req, res) => {
       ownerId
     });
 
-    // Update owner's role to store_owner (unless they're already a system admin)
     if (owner.role !== 'system_admin') {
       await owner.update({ 
         role: 'store_owner',
         isStoreOwner: true 
       });
     } else {
-      // System admins can own stores without losing their admin role
       await owner.update({ 
         isStoreOwner: true 
       });
@@ -168,7 +160,6 @@ const updateStore = async (req, res) => {
       return res.status(404).json({ error: 'Store not found' });
     }
 
-    // Check if email is being changed and if it already exists
     if (email && email !== store.email) {
       const existingStore = await Store.findOne({ where: { email } });
       if (existingStore) {
