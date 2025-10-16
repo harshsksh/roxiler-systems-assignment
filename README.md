@@ -89,11 +89,37 @@ A full-stack web application that allows users to submit ratings for stores regi
    ```
 
 5. **Start the application**
+
+   **Option 1: Smart Startup (Recommended)**
+   ```bash
+   npm start
+   ```
+   or
+   ```bash
+   npm run start-safe
+   ```
+   
+   This will automatically:
+   - Kill any existing Node.js processes
+   - Free up ports 3000 and 5000 if they're in use
+   - Start both backend and frontend servers
+   
+   **Option 2: Manual Startup**
    ```bash
    npm run dev
    ```
+   
+   **Option 3: Windows Batch File**
+   ```bash
+   start-app.bat
+   ```
+   
+   **Option 4: PowerShell Script**
+   ```powershell
+   .\start-app.ps1
+   ```
 
-   This will start both the backend server (port 5000) and frontend development server (port 3000).
+   All methods will start both the backend server (port 5000) and frontend development server (port 3000).
 
 ## Default Admin Account
 
@@ -236,16 +262,34 @@ After starting the application, you can log in with the default admin account:
 
 ## Development
 
-### Backend Development
+### Smart Startup with Port Management
+The application includes intelligent port management that automatically:
+- Detects if ports 3000 or 5000 are in use
+- Kills processes using those ports
+- Starts the application on clean ports
+
 ```bash
+npm start          # Smart startup (recommended)
+npm run start-safe # Same as above
+```
+
+### Manual Development
+```bash
+# Backend only
 cd server
+npm run dev
+
+# Frontend only  
+cd client
+npm start
+
+# Both (manual)
 npm run dev
 ```
 
-### Frontend Development
+### Port Management Utilities
 ```bash
-cd client
-npm start
+npm run kill-ports  # Kill processes on ports 3000 and 5000
 ```
 
 ### Database Migrations
