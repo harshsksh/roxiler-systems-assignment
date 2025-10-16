@@ -41,8 +41,8 @@ const StoreOwnerDashboard = () => {
         setPagination(ratingsResponse.data.pagination);
       }
     } catch (error) {
-      toast.error('Failed to fetch store data');
       console.error('Error fetching store data:', error);
+      toast.error('Failed to fetch store data');
     } finally {
       setLoading(false);
     }

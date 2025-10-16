@@ -25,11 +25,11 @@ api.interceptors.request.use(
       config.url.startsWith(endpoint)
     );
     
-    // Special case: GET /stores is public, but POST/PUT/DELETE /stores requires auth
-    const isPublicStoreGet = config.url.startsWith('/stores') && config.method.toLowerCase() === 'get';
+    // Special case: Only GET /stores (list all stores) is public, other GET requests require auth
+    const isPublicStoreList = config.url === '/stores' && config.method.toLowerCase() === 'get';
     
     // Add Authorization header for all requests except public endpoints
-    if (!isPublicEndpoint && !isPublicStoreGet && token) {
+    if (!isPublicEndpoint && !isPublicStoreList && token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     

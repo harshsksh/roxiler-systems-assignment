@@ -26,7 +26,7 @@ import StoreOwnerDashboard from './components/store/StoreOwnerDashboard';
 function App() {
   return (
     <AuthProvider>
-      <Router future={{ v7_relativeSplatPath: true }}>
+      <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
         <div className="App">
           <Toaster
             position="top-right"
