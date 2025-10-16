@@ -164,12 +164,7 @@ const StoreManagement = () => {
   };
 
   const handleSort = (field) => {
-    if (sortBy === field) {
-      setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC');
-    } else {
-      setSortBy(field);
-      setSortOrder('ASC');
-    }
+    setSortBy(field);
     setFilterType(field);
     setPagination(prev => ({ ...prev, page: 1 }));
   };
@@ -235,30 +230,24 @@ const StoreManagement = () => {
             />
           </div>
           
-          <div className="flex space-x-2">
+          <div className="flex items-center space-x-2">
+            <Filter className="h-4 w-4 text-gray-400" />
+            <select
+              value={sortBy}
+              onChange={(e) => handleSort(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="name">Sort by Name</option>
+              <option value="email">Sort by Email</option>
+              <option value="address">Sort by Address</option>
+              <option value="averageRating">Sort by Rating</option>
+            </select>
             <Button
               variant="outline"
-              onClick={() => handleSort('name')}
+              onClick={() => setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC')}
               className="flex items-center"
             >
-              <Filter className="h-4 w-4 mr-2" />
-              Sort by Name {sortBy === 'name' && (sortOrder === 'ASC' ? '↑' : '↓')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => handleSort('email')}
-              className="flex items-center"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Sort by Email {sortBy === 'email' && (sortOrder === 'ASC' ? '↑' : '↓')}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => handleSort('averageRating')}
-              className="flex items-center"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Sort by Rating {sortBy === 'averageRating' && (sortOrder === 'ASC' ? '↑' : '↓')}
+              {sortOrder === 'ASC' ? '↑' : '↓'}
             </Button>
           </div>
         </div>
