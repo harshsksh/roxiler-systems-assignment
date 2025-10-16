@@ -2,7 +2,7 @@ const { Client } = require('pg');
 require('dotenv').config();
 
 const testConnection = async () => {
-  console.log('🔍 Testing PostgreSQL connection...');
+  console.log('Testing PostgreSQL connection...');
   
   // Try different connection methods
   const connectionConfigs = [
@@ -36,12 +36,12 @@ const testConnection = async () => {
   ];
 
   for (const { name, config } of connectionConfigs) {
-    console.log(`\n📡 Trying ${name}...`);
+    console.log(`\nTrying ${name}...`);
     const client = new Client(config);
     
     try {
       await client.connect();
-      console.log(`✅ ${name} - Connection successful!`);
+      console.log(`${name} - Connection successful!`);
       
       // Test if we can create database
       const dbName = process.env.DB_NAME || 'store_rating_db';
@@ -51,24 +51,24 @@ const testConnection = async () => {
       );
       
       if (result.rows.length === 0) {
-        console.log(`📦 Creating database: ${dbName}`);
+        console.log(`Creating database: ${dbName}`);
         await client.query(`CREATE DATABASE "${dbName}"`);
-        console.log(`✅ Database ${dbName} created successfully`);
+        console.log(`Database ${dbName} created successfully`);
       } else {
-        console.log(`✅ Database ${dbName} already exists`);
+        console.log(`Database ${dbName} already exists`);
       }
       
       await client.end();
-      console.log(`🎉 ${name} - Setup completed successfully!`);
+      console.log(`${name} - Setup completed successfully!`);
       return true;
       
     } catch (error) {
-      console.log(`❌ ${name} - Failed: ${error.message}`);
+      console.log(`${name} - Failed: ${error.message}`);
       await client.end().catch(() => {});
     }
   }
   
-  console.log('\n💡 Troubleshooting tips:');
+  console.log('\nTroubleshooting tips:');
   console.log('1. Make sure PostgreSQL service is running');
   console.log('2. Check if PostgreSQL is installed correctly');
   console.log('3. Try connecting with pgAdmin or psql command line');

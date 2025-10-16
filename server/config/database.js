@@ -7,7 +7,7 @@ const useSQLite = process.env.USE_SQLITE === 'true' || !process.env.DB_PASSWORD;
 let sequelize;
 
 if (useSQLite) {
-  console.log('📦 Using SQLite database for development');
+  console.log('Using SQLite database for development');
   sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: './database.sqlite',
@@ -18,7 +18,7 @@ if (useSQLite) {
     }
   });
 } else {
-  console.log('🐘 Using PostgreSQL database');
+  console.log('Using PostgreSQL database');
   sequelize = new Sequelize(
     process.env.DB_NAME || 'store_rating_db',
     process.env.DB_USER || 'postgres',

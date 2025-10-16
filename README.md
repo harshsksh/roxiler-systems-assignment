@@ -208,44 +208,44 @@ After starting the application, you can log in with the default admin account:
 
 ## Features Implemented
 
-✅ **Authentication System**
+**Authentication System**
 - JWT-based authentication
 - Role-based access control
 - Password hashing with bcrypt
 
-✅ **User Management**
+**User Management**
 - CRUD operations for users
 - Role assignment (system_admin, normal_user, store_owner)
 - User profile management
 
-✅ **Store Management**
+**Store Management**
 - CRUD operations for stores
 - Store owner assignment
 - Store rating calculations
 
-✅ **Rating System**
+**Rating System**
 - Submit ratings (1-5 scale)
 - Update existing ratings
 - Delete ratings
 - Average rating calculation
 
-✅ **Dashboard & Analytics**
+**Dashboard & Analytics**
 - System statistics for admins
 - Store performance for store owners
 - User activity tracking
 
-✅ **Search & Filtering**
+**Search & Filtering**
 - Search by name, email, address
 - Filter by role
 - Sorting functionality
 - Pagination
 
-✅ **Form Validations**
+**Form Validations**
 - Client-side and server-side validation
 - Real-time error feedback
 - Input sanitization
 
-✅ **Responsive Design**
+**Responsive Design**
 - Mobile-friendly interface
 - Modern UI with Tailwind CSS
 - Accessible components

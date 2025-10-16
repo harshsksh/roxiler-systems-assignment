@@ -12,7 +12,7 @@ const setupDatabase = async () => {
 
   try {
     await client.connect();
-    console.log('✅ Connected to PostgreSQL');
+    console.log('Connected to PostgreSQL');
 
     // Check if database exists
     const dbName = process.env.DB_NAME || 'store_rating_db';
@@ -22,17 +22,17 @@ const setupDatabase = async () => {
     );
 
     if (result.rows.length === 0) {
-      console.log(`📦 Creating database: ${dbName}`);
+      console.log(`Creating database: ${dbName}`);
       await client.query(`CREATE DATABASE "${dbName}"`);
-      console.log(`✅ Database ${dbName} created successfully`);
+      console.log(`Database ${dbName} created successfully`);
     } else {
-      console.log(`✅ Database ${dbName} already exists`);
+      console.log(`Database ${dbName} already exists`);
     }
 
     await client.end();
-    console.log('🎉 Database setup completed!');
+    console.log('Database setup completed!');
   } catch (error) {
-    console.error('❌ Database setup failed:', error.message);
+    console.error('Database setup failed:', error.message);
     process.exit(1);
   }
 };
