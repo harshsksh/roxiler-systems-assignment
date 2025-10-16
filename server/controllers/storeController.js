@@ -3,28 +3,54 @@ const { Op } = require('sequelize');
 
 const getAllStores = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, sortBy = 'name', sortOrder = 'ASC' } = req.query;
+    const { page = 1, limit = 10, search, filterType = 'name', sortBy = 'name', sortOrder = 'ASC' } = req.query;
     
     const offset = (page - 1) * limit;
     const whereClause = {};
 
     if (search && search.trim()) {
       const searchTerm = search.trim().toLowerCase();
-      whereClause[Op.or] = [
-        sequelize.where(sequelize.fn('LOWER', sequelize.col('Store.name')), { [Op.like]: `%${searchTerm}%` }),
-        sequelize.where(sequelize.fn('LOWER', sequelize.col('Store.address')), { [Op.like]: `%${searchTerm}%` })
-      ];
+      switch (filterType) {
+        case 'name':
+          whereClause.name = { [Op.like]: `%${searchTerm}%` };
+          break;
+        case 'email':
+          whereClause.email = { [Op.like]: `%${searchTerm}%` };
+          break;
+        case 'address':
+          whereClause.address = { [Op.like]: `%${searchTerm}%` };
+          break;
+        case 'rating':
+          const ratingValue = parseFloat(searchTerm);
+          if (!isNaN(ratingValue)) {
+            whereClause.averageRating = { [Op.gte]: ratingValue };
+          }
+          break;
+        default:
+          whereClause[Op.or] = [
+            { name: { [Op.like]: `%${searchTerm}%` } },
+            { address: { [Op.like]: `%${searchTerm}%` } }
+          ];
+      }
     }
     
+    const includeOptions = [
+      {
+        model: User,
+        as: 'owner',
+        attributes: ['id', 'name', 'email']
+      }
+    ];
+
+    if (search && search.trim() && filterType === 'owner') {
+      includeOptions[0].where = {
+        name: { [Op.like]: `%${search.trim().toLowerCase()}%` }
+      };
+    }
+
     const { count, rows: stores } = await Store.findAndCountAll({
       where: whereClause,
-      include: [
-        {
-          model: User,
-          as: 'owner',
-          attributes: ['id', 'name', 'email']
-        }
-      ],
+      include: includeOptions,
       order: [[sortBy, sortOrder.toUpperCase()]],
       limit: parseInt(limit),
       offset: parseInt(offset)

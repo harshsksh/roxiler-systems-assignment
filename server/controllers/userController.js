@@ -3,17 +3,33 @@ const { Op } = require('sequelize');
 
 const getAllUsers = async (req, res) => {
   try {
-    const { page = 1, limit = 10, search, role, sortBy = 'name', sortOrder = 'ASC' } = req.query;
+    const { page = 1, limit = 10, search, role, filterType = 'name', sortBy = 'name', sortOrder = 'ASC' } = req.query;
     
     const offset = (page - 1) * limit;
     const whereClause = {};
 
     if (search) {
-      whereClause[Op.or] = [
-        { name: { [Op.like]: `%${search}%` } },
-        { email: { [Op.like]: `%${search}%` } },
-        { address: { [Op.like]: `%${search}%` } }
-      ];
+      const searchTerm = `%${search}%`;
+      switch (filterType) {
+        case 'name':
+          whereClause.name = { [Op.like]: searchTerm };
+          break;
+        case 'email':
+          whereClause.email = { [Op.like]: searchTerm };
+          break;
+        case 'address':
+          whereClause.address = { [Op.like]: searchTerm };
+          break;
+        case 'role':
+          whereClause.role = { [Op.like]: searchTerm };
+          break;
+        default:
+          whereClause[Op.or] = [
+            { name: { [Op.like]: searchTerm } },
+            { email: { [Op.like]: searchTerm } },
+            { address: { [Op.like]: searchTerm } }
+          ];
+      }
     }
 
     if (role) {

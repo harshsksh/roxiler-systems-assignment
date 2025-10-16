@@ -22,6 +22,7 @@ const StoreManagement = () => {
   });
   const [errors, setErrors] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('name');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('ASC');
   const [pagination, setPagination] = useState({
@@ -34,7 +35,7 @@ const StoreManagement = () => {
   useEffect(() => {
     fetchStores();
     fetchUsers();
-  }, [pagination.page, searchTerm, sortBy, sortOrder]);
+  }, [pagination.page, searchTerm, filterType, sortBy, sortOrder]);
 
   const fetchStores = async () => {
     try {
@@ -46,7 +47,10 @@ const StoreManagement = () => {
         sortOrder
       };
       
-      if (searchTerm) params.search = searchTerm;
+      if (searchTerm) {
+        params.search = searchTerm;
+        params.filterType = filterType;
+      }
 
       const response = await storeService.getAllStores(params);
       setStores(response.data.stores);
@@ -159,6 +163,11 @@ const StoreManagement = () => {
     setPagination(prev => ({ ...prev, page: 1 }));
   };
 
+  const handleFilterTypeChange = (e) => {
+    setFilterType(e.target.value);
+    setPagination(prev => ({ ...prev, page: 1 }));
+  };
+
   const handleSort = (field) => {
     if (sortBy === field) {
       setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC');
@@ -218,17 +227,29 @@ const StoreManagement = () => {
 
       {/* Filters */}
       <div className="bg-white p-4 rounded-lg shadow">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search stores..."
+              placeholder={`Search by ${filterType}...`}
               value={searchTerm}
               onChange={handleSearch}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
+          
+          <select
+            value={filterType}
+            onChange={handleFilterTypeChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="name">Filter by Name</option>
+            <option value="email">Filter by Email</option>
+            <option value="address">Filter by Address</option>
+            <option value="owner">Filter by Owner</option>
+            <option value="rating">Filter by Rating</option>
+          </select>
           
           <div className="flex space-x-2">
             <Button
