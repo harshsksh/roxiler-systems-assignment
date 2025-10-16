@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { userService } from '../../services/userService';
 import { Users, Store, Star, TrendingUp } from 'lucide-react';
 import LoadingSpinner from '../LoadingSpinner';
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -110,12 +112,18 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {user?.role === 'system_admin' && (
             <>
-              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+              <button 
+                onClick={() => navigate('/users')}
+                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
+              >
                 <Users className="h-6 w-6 text-blue-600 mb-2" />
                 <h3 className="font-medium text-gray-900">Manage Users</h3>
                 <p className="text-sm text-gray-500">Add, edit, or remove users</p>
               </button>
-              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+              <button 
+                onClick={() => navigate('/admin/stores')}
+                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
+              >
                 <Store className="h-6 w-6 text-green-600 mb-2" />
                 <h3 className="font-medium text-gray-900">Manage Stores</h3>
                 <p className="text-sm text-gray-500">Add, edit, or remove stores</p>
@@ -124,7 +132,10 @@ const Dashboard = () => {
           )}
           
           {user?.role === 'normal_user' && (
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+            <button 
+              onClick={() => navigate('/stores')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
+            >
               <Store className="h-6 w-6 text-blue-600 mb-2" />
               <h3 className="font-medium text-gray-900">Browse Stores</h3>
               <p className="text-sm text-gray-500">Find and rate stores</p>
@@ -132,7 +143,10 @@ const Dashboard = () => {
           )}
           
           {user?.role === 'store_owner' && (
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left">
+            <button 
+              onClick={() => navigate('/my-store')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left transition-colors"
+            >
               <TrendingUp className="h-6 w-6 text-green-600 mb-2" />
               <h3 className="font-medium text-gray-900">View Analytics</h3>
               <p className="text-sm text-gray-500">Check your store performance</p>

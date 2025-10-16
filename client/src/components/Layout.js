@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
         return [
           ...baseItems,
           { path: '/users', label: 'Users', icon: User },
-          { path: '/stores', label: 'Stores', icon: Store }
+          { path: '/admin/stores', label: 'Stores', icon: Store }
         ];
       case 'normal_user':
         return [

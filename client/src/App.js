@@ -82,7 +82,7 @@ function App() {
               </ProtectedRoute>
             } />
             
-            <Route path="/stores" element={
+            <Route path="/admin/stores" element={
               <ProtectedRoute allowedRoles={['system_admin']}>
                 <Layout>
                   <StoreManagement />
